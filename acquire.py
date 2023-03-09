@@ -13,7 +13,7 @@ def get_titanic_data():
     if os.path.isfile(filename):
         #return cached data
         # print('opening data from file')
-        return pd.read_csv(filename)
+        return pd.read_csv(filename, index_col=0)
     else:
         # read the SQL query into a dataframe
         # print('cached file not found, creating new file')
@@ -40,7 +40,7 @@ def get_iris_data():
     if os.path.isfile(filename):
         #return cached data
         # print('opening data from file')
-        return pd.read_csv(filename)
+        return pd.read_csv(filename, index_col=0)
     else:
         # read the SQL query into a dataframe
         # print('cached file not found, creating new file')
@@ -70,7 +70,7 @@ def get_telco_data():
     if os.path.isfile(filename):
         #return cached data
         # print('opening data from file')
-        return pd.read_csv(filename)
+        return pd.read_csv(filename, index_col=0)
     else:
         # read the SQL query into a dataframe
         # print('cached file not found, creating new file')
