@@ -104,6 +104,7 @@ def prep_telco(telco_df):
     
     # now we have column names with spaces, which we don't want
     # let's rename the columns with spaces, remove ()s and lower case everything
+    column_names = list(telco_df.columns)
     new_names = []
     for col in column_names:
         new_names.append(col.replace(' ', '_').replace('(','').replace(')', '').lower())
