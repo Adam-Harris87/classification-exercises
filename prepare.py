@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import acquire
 
 # Create a function named prep_iris that accepts the untransformed iris data, 
 # and returns the data with the transformations above applied.
@@ -110,26 +111,6 @@ def prep_telco(telco_df):
         new_names.append(col.replace(' ', '_').replace('(','').replace(')', '').lower())
     telco_df.columns = new_names
     
-    # now we have redunant columns, because of the dummy columns, lets' remove them
-    telco_df = telco_df.drop(columns=[
-         'gender',
-         'partner',
-         'dependents',
-         'phone_service',
-         'multiple_lines',
-         'online_security',
-         'online_backup',
-         'device_protection',
-         'tech_support',
-         'streaming_tv',
-         'streaming_movies',
-         'paperless_billing',
-         'churn',
-         'contract_type',
-         'internet_service_type',
-         'payment_type'
-        ])
-    
     return telco_df
 
 
@@ -169,3 +150,24 @@ def split_data(df, target=None, random_seed=4233):
                                    stratify=strat2)
     
     return train, validate, test
+
+# encasulating the whole data wrangling pipeline into a single function
+def wrangle_iris():
+    iris =  prep_iris(acquire.get_iris_data())
+    train_iris, validate_iris, test_iris = split_data(iris, target='species')
+    return train_iris, validate_iris, test_iris
+def wrangle_titanic():
+    titanic = prep_titanic(acquire.get_titanic_data())
+    train_titanic, validate_titanic, test_titanic = split_data(titanic, target='survived')
+    return train_titanic, validate_titanic, test_titanic
+def wrangle_telco():
+    telco =  prep_telco(acquire.get_telco_data())
+    train_telco, validate_telco, test_telco = split_data(telco, target='churn')
+    return train_telco, validate_telco, test_telco
+
+# example of calling the wrangle pipeline for multiple options of datasets
+my_functs = {'iris': wrangle_iris,
+            'titanic': wrangle_titanic,
+            'telco': wrangle_telco}
+def wrangle_data(command_string):
+    return my_functs[command_string]()
