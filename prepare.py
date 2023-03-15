@@ -81,13 +81,17 @@ def prep_telco(telco_df):
     telco_df['total_charges'] = telco_df.total_charges.replace(
         ' ','').replace('','0').astype(float)
     
+    # replace yes/no column values with 1/0
+    telco_df['partner'] = telco_df.partner.map({'Yes': 1, 'No': 0})
+    telco_df['dependents'] = telco_df.dependents.map({'Yes': 1, 'No': 0})
+    telco_df['phone_service'] = telco_df.phone_service.map({'Yes': 1, 'No': 0})
+    telco_df['paperless_billing'] = telco_df.paperless_billing.map({'Yes': 1, 'No': 0})
+    telco_df['churn'] = telco_df.churn.map({'Yes': 1, 'No': 0})
+
     # convert the categorical data into dummies
     telco_df = pd.concat(
         [telco_df, pd.get_dummies(telco_df[[
          'gender',
-         'partner',
-         'dependents',
-         'phone_service',
          'multiple_lines',
          'online_security',
          'online_backup',
@@ -95,8 +99,6 @@ def prep_telco(telco_df):
          'tech_support',
          'streaming_tv',
          'streaming_movies',
-         'paperless_billing',
-         'churn',
          'contract_type',
          'internet_service_type',
          'payment_type'
